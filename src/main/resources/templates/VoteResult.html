@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Informatyk roku EF-DI - second edition</title>
+</head>
+<body>
+<h1>
+    Zagłosowałeś na:
+</h1>
+<h2>
+    <div th:each="vote: ${votes}">
+        <label th:text="${vote}">message text</label>
+    </div>
+    <br/>
+    Dziękujemy !
+</h2>
+</body>
+</html>

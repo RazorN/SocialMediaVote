@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Informatyk roku EF-DI - second edition</title>
+</head>
+<body>
+<h1>Siemanko, <span th:text="${facebookProfile.name}">Ktosiu</span>!</h1>
+<h2>
+    <div th:switch="${userIsInGroup}">
+        <p th:case="true">
+        <form  action="#" th:action="@{/vote}" th:object="${vote}" method="post">
+            <input type="hidden" th:attr="name='voterName'" th:value="${facebookProfile.name}"/>
+            <div th:each="participant,iterStat : ${participants}">
+                <label th:text="${participant.name}">message text</label>
+                <input type="checkbox" name="voteOpt" th:value="${participant.name}" th:field="*{votes[__${iterStat.index}__]}"/>
+            </div>
+            <input type="submit" value="Submit"/>
+        </form>
+        </p>
+        <p th:case="true">Nie należysz do grupy EF-DI</p>
+    </div>
+</h2>
+</body>
+</html>
