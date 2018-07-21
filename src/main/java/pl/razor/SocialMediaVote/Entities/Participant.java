@@ -1,7 +1,16 @@
 package pl.razor.SocialMediaVote.Entities;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Participant {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private String name;
     private int score;
@@ -10,8 +19,7 @@ public class Participant {
         setScore(0);
     }
 
-    public Participant(long id, String name, int score){
-        setId(id);
+    public Participant(String name, int score){
         setName(name);
         setScore(score);
     }

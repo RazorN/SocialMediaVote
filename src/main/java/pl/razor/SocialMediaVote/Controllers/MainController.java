@@ -79,10 +79,10 @@ public class MainController {
     //------------- TEST METHODS -------------
     private List<Participant> createMockParticipantList(){
         List<Participant> participants = new ArrayList<>();
-        participants.add(new Participant(1,"Razor",3));
-        participants.add(new Participant(2,"Lobo",2));
-        participants.add(new Participant(3,"Krzy",1));
-        participants.add(new Participant(4,"Marcin", 999));
+        participants.add(new Participant("Razor",3));
+        participants.add(new Participant("Lobo",2));
+        participants.add(new Participant("Krzy",1));
+        participants.add(new Participant("Marcin", 999));
         return participants;
     }
 }
