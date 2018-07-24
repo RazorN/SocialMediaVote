@@ -5,15 +5,19 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.Post;
+import org.springframework.social.facebook.api.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.razor.SocialMediaVote.Entities.Participant;
 import pl.razor.SocialMediaVote.Entities.Vote;
+import pl.razor.SocialMediaVote.Repositories.ParticipantRepository;
 import pl.razor.SocialMediaVote.Repositories.VoteRepository;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -22,6 +26,9 @@ public class VoteController {
     // Test repository -- check connection only
     @Autowired
     private VoteRepository voteRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     private Facebook facebook;
     private ConnectionRepository connectionRepository;
@@ -45,6 +52,13 @@ public class VoteController {
 
         // Saving to test repository
         voteRepository.save(vote);
+
+        //update score
+        for(String s : vote.getVotes()){
+            Participant p = participantRepository.findByName(s);
+            p.setScore(p.getScore()+1);
+            participantRepository.save(p);
+        }
 
         // Create feed object:
         PagedList<Post> feed = facebook.feedOperations().getFeed();

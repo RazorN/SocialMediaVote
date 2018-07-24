@@ -37,11 +37,12 @@ public class Vote {
         return voterName;
     }
 
-    public void setVotes(List<String> votes) {
-        this.votes = votes;
-    }
-
     public List<String> getVotes() {
         return votes;
+    }
+
+
+    public void setVotes(List<String> votes) {
+        this.votes = votes;
     }
 }

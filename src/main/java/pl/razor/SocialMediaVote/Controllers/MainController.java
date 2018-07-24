@@ -1,5 +1,6 @@
 package pl.razor.SocialMediaVote.Controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.*;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.razor.SocialMediaVote.Entities.Participant;
 import pl.razor.SocialMediaVote.Entities.Vote;
+import pl.razor.SocialMediaVote.Repositories.ParticipantRepository;
+import pl.razor.SocialMediaVote.Repositories.VoteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,12 @@ public class MainController {
     // Facebook connection hooks:
     private Facebook facebook;
     private ConnectionRepository connectionRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     // Vote candidates list:
     List<Participant> participants;
@@ -37,6 +46,9 @@ public class MainController {
         if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
             return "redirect:/connect/facebook";
         }
+
+        //Test save to repository -- remove asap!
+        participantRepository.save(participants);
 
         // Get names of groups user belongs to:
         List<GroupMembership> listGroup=facebook.groupOperations().getMemberships();
@@ -61,6 +73,13 @@ public class MainController {
         String name=user.getName();
         String firstName=user.getFirstName();
 
+        Iterable<Vote> votes = voteRepository.findAll();
+
+        for(Vote v : votes){
+            if(v.getVoterName().equals(user.getName()))
+                return "alreadyVoted";
+        }
+
         //--    Create feed object
         PagedList<Post> feed = facebook.feedOperations().getFeed();
 
@@ -79,10 +98,10 @@ public class MainController {
     //------------- TEST METHODS -------------
     private List<Participant> createMockParticipantList(){
         List<Participant> participants = new ArrayList<>();
-        participants.add(new Participant("Razor",3));
-        participants.add(new Participant("Lobo",2));
-        participants.add(new Participant("Krzy",1));
-        participants.add(new Participant("Marcin", 999));
+        participants.add(new Participant("Razor",0));
+        participants.add(new Participant("Lobo",0));
+        participants.add(new Participant("Krzy",0));
+        participants.add(new Participant("Marcin", 0));
         return participants;
     }
 }
