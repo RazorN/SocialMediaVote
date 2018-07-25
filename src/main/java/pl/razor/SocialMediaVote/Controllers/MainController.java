@@ -47,8 +47,8 @@ public class MainController {
             return "redirect:/connect/facebook";
         }
 
-        //Test save to repository -- remove asap!
-        participantRepository.save(participants);
+        // Get all participants
+        participants = participantRepository.findAll();
 
         // Get names of groups user belongs to:
         List<GroupMembership> listGroup=facebook.groupOperations().getMemberships();
@@ -73,8 +73,8 @@ public class MainController {
         String name=user.getName();
         String firstName=user.getFirstName();
 
+        // Check if user already voted:
         Iterable<Vote> votes = voteRepository.findAll();
-
         for(Vote v : votes){
             if(v.getVoterName().equals(user.getName()))
                 return "alreadyVoted";
